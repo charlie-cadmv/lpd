@@ -1,0 +1,86 @@
+<project name="Simoes LP Daemon Project" default="dist" basedir=".">
+    <description>
+        chris simoes java based lp daemon build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src/lpd"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="javadoc"  location="javadoc"/>
+
+  <property name="jar.name" value="lpd"/>
+  
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}" classpath="lib/log4j-1.2.8.jar:lib/junit.jar"/>
+  </target>
+
+  <target name="dist" depends="compile,javadoc"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+    <!-- Put everything in ${build} into a jar -->
+    <jar jarfile="${dist}/lib/${jar.name}-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+    <delete file="error.log"/>
+  </target>
+
+  <target name="junit" depends="dist"
+     description="build/run junit">
+    <!-- junit is already built -->
+    <java classname="junit.textui.TestRunner">
+      <arg value="org.simoes.lpd.test.TestQueue"/>
+      <classpath>
+        <pathelement location="build"/>
+        <pathelement location="lib/log4j-1.2.8.jar"/>
+        <pathelement location="lib/junit.jar"/>
+      </classpath>
+    </java>
+   </target>
+
+  <target name="javadoc" description="create javadocs">
+	  <javadoc destdir="${javadoc}"
+	           author="true"
+	           version="true"
+	           use="true"
+	           windowtitle="LPD Javadoc">
+
+		<classpath>
+			<pathelement location="lib/log4j-1.2.8.jar"/>
+			<pathelement location="lib/junit.jar"/>
+		</classpath>
+
+	    <packageset dir="${src}" defaultexcludes="yes">
+	      <include name="org/**" />
+<!--	      <exclude name="com/dummy/test/doc-files/**"/>  -->
+	    </packageset>
+	
+	    <doctitle><![CDATA[<h1>LPD Javadoc</h1>]]></doctitle>
+<!--	    <bottom><![CDATA[<i>Copyright &#169; 2000 Dummy Corp. All Rights Reserved.</i>]]></bottom>  -->
+<!--	    
+	    <tag name="todo" scope="all" description="To do:" />
+	    <tag name="TODO" scope="all" description="To do:" />
+	    <group title="Group 1 Packages" packages="com.dummy.test.a*"/>
+	    <group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
+	    <link offline="true" href="http://java.sun.com/products/jdk/1.2/docs/api/" packagelistLoc="C:\tmp"/>
+	    <link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
+-->
+	  </javadoc>
+  </target>
+
+</project>

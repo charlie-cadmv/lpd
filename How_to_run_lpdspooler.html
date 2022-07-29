@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>How to run lpdspooler</title>
+</head>
+<body>
+<h1>How to run a test of lpdspooler.</h1>
+<p>This walk through will give a user an understanding of <a
+ href="#Running_lpdspooler">how to run the lpdspooler</a>.&nbsp; It
+will also show <a href="#Installing_a_printer_to_print_to_the">how to
+setup a printer (in Windows 2000) to print to the lpdspooler</a> and <a
+ href="#Print_to_the_lpdspooler_in_Linux_RedHat">how to setup a printer
+(in RedHat Linux 9.0) to print to the lpdspooler</a>.&nbsp; Of course
+the point of the lpdspooler is to capture print jobs so that you (the
+programmer) can do something with the print jobs before printing
+them.&nbsp; Some uses I have had are:<br>
+</p>
+<ul>
+  <li>forward print jobs to another program using a proprietary
+protocol <br>
+  </li>
+  <li>modify print job and then forward it to a JetDirect network print
+server attached to a real printer</li>
+  <li>write print jobs to disk or to a database</li>
+  <li>combine print data into one large print job and then send it to a
+network printer</li>
+</ul>
+<h3><a name="Running_lpdspooler"></a>Running lpdspooler</h3>
+<ol>
+  <li>Download the latest release of lpdspooler from <a
+ href="https://sourceforge.net/projects/lpdspooler/">sourceforge
+project site</a>.&nbsp; <br>
+  </li>
+  <li>Extract release contents to a directory of your choice which we
+will call <span style="font-style: italic;">lpd_direcotry</span>.</li>
+  <li>Add the "log4j" JAR (found in the <span
+ style="font-style: italic;">lpd_direcotry</span>/lib directory) and
+"lpd" JAR
+(found in the <span style="font-style: italic;">lpd_direcotry</span>/dist/lib)
+directory to your CLASSPATH</li>
+  <li>Run "java org.simoes.lpd.Main" from the directory where you
+extracted lpdspooler (the <span style="font-style: italic;">lpd_direcotry</span>).&nbsp;
+This is important because lpdspooler looks for the 2 configuration
+files "logConfig.ini" and "lpd.properties".&nbsp; The default setting
+in these files should be fine.<br>
+  </li>
+  <ul>
+    <li>lpdConfig.ini - is used to configure logging from lpdspooler</li>
+    <li>lpd.properties - is used to configure lpdspooler's settings</li>
+  </ul>
+  <li>For me on Windows my command line looks like this below all on
+one line, again be sure to <span style="text-decoration: underline;">run
+from your <span style="font-style: italic;">lpd_directory</span></span>:
+    <br>
+  </li>
+  <span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+C:\Chris\Java\Projects\lpd-0.5.4&gt;java -classpath
+"C:\Chris\Java\Projects\lpd-0.5.4\lib\log4j-1.2.8.jar;C:\Chris\Java\Projects\lpd-0.5.4\dist\lib\lpd-20031206.jar"
+org.simoes.lpd.Main</span><br style="font-weight: bold;">
+  <li>Install a printer to print to the lpdspooler.</li>
+  <ul>
+    <li><a href="#Installing_a_printer_to_print_to_the">Installation of
+a Windows printer</a></li>
+    <li><a href="#Print_to_the_lpdspooler_in_Linux_RedHat">Installation
+of a Linux printer</a><br>
+    </li>
+  </ul>
+</ol>
+<br>
+<h3><a name="Installing_a_printer_to_print_to_the"></a>Installing a
+printer to print to the lpdspooler (Windows 2000)</h3>
+Begin by clicking on the "Add Printer" wizard.&nbsp; Since a picture is
+worth a thousand words, these should show you what you need to do.<br>
+<br>
+<img src="AddPrinterStart-01.png" title="" alt="Click &quot;Add Printer&quot;"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Choose Local printer, do not
+automatically try to detect it.</span><br>
+<img src="AddPrinterLocal-02.png" title="" alt="Choose &quot;Local Printer&quot;"
+ style="width: 503px; height: 385px; font-style: italic;"><br>
+<br>
+<span style="font-style: italic;">Create a new Standard TCP/IP port.</span><br>
+<img src="AddPrinterCreateNewPort-03.png" title=""
+ alt="Create a new port of type Standard TCP/IP"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">This will launch the Add Standard
+TCP/IP Printer Port Wizard.</span><br>
+<img src="AddPortStart-04.png" title="" alt="Add a new port"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Enter the IP of the box running
+lpdspooler, just use the loopback IP for your box 127.0.0.1</span><br>
+<img src="AddPortIP-05.png" title=""
+ alt="Enter the IP of the box running lpdspooler, for this example use the local box 127.0.0.1"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Choose Custom and click on the
+settings button.</span><br>
+<img src="AddPortCustom-06.png" title=""
+ alt="Setup custom settings for the port"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Configure the protocol for LPR
+printing, the Queue name to RAW.<br>
+<span style="font-style: italic;"></span></span><img
+ src="AddPortSettings-07.png" title=""
+ alt="Configure port settings for LPR printing, the Queue name to RAW"
+ style="width: 413px; height: 448px;"><br>
+<br>
+<span style="font-style: italic;">Click Finish to add the port, and
+then for this example just add a Generic Text printer.</span><br
+ style="font-style: italic;">
+<span style="font-style: italic;">You can use any printer type you like
+in practice.</span><br>
+<img src="AddPrinterGeneric-08.png" title=""
+ alt="For this example just add a Generic Text printer"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Might as well keep the existing
+driver, but it really should not matter.</span><br>
+<img src="AddPrinterKeepDriver-09.png" title=""
+ alt="Choose if you want to keep the existing driver or not."
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Name your printer something and
+choose if it will be the default printer or not.</span><br>
+<img src="AddPrinterName-10.png" title="" alt="Give the printer a name"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Choose if you want to share this
+printer.</span><br>
+<img src="AddPrinterShare-11.png" title=""
+ alt="Choose if you want to share the printer."
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Choose to not print a test page.</span><br>
+<img src="AddPrinterTestPage-12.png" title=""
+ alt="Choose not to print a test page"
+ style="width: 503px; height: 385px;"><br>
+<br>
+<span style="font-style: italic;">Click finish.</span><br>
+<img src="AddPrinterFinish-13.png" title=""
+ alt="Click finish and you are done."
+ style="width: 503px; height: 385px;"><br>
+<br>
+Now if you open up a document in Notepad you should be able to print to
+the printer you just created.&nbsp; These print jobs should show up in
+the lpdspooler.&nbsp; <br>
+<br>
+<h3><a name="Print_to_the_lpdspooler_in_Linux_RedHat"></a>Print to the
+lpdspooler in Linux (RedHat 9.0)<br>
+</h3>
+The following shows how to setup a print queue using RedHat Linux
+9.0.&nbsp; However, the only really important piece here is that you
+setup your LPD print queue with the correct IP and QUEUE name.&nbsp; To
+be even handed pictures follow:<br>
+<br>
+<span style="font-style: italic;">Click New in the Printer configuration</span><br>
+<img src="RedHatPrinterConfig-01.png" title=""
+ alt="Start Add printer wizard" style="width: 412px; height: 226px;"><br>
+<br>
+<span style="font-style: italic;">Click Forward</span><br>
+<img src="RedHatPrinterAddQueue-02.png" title=""
+ alt="Start configuring printer" style="width: 512px; height: 306px;"><br>
+<br>
+<span style="font-style: italic;">Enter a Name here to identify this
+printer on the Linux box (can be anything).</span><br>
+<img src="RedHatPrinterAddQueue-03.png" title=""
+ alt="Enter a name for this printer"
+ style="width: 512px; height: 306px;"><br>
+<br>
+<span style="font-style: italic;">Select "Networked UNIX (LPD)" as the
+queue type.<br>
+For our example set the server to 127.0.0.1 and the Queue to RAW.<br>
+</span><img src="RedHatPrinterAddQueue-04.png" title=""
+ alt="Enter the proper IP and Queue"
+ style="width: 512px; height: 306px;"><br>
+<br>
+<span style="font-style: italic;">Choose the Raw Print Queue printer
+model.</span><br>
+<img src="RedHatPrinterAddQueue-05.png" title=""
+ alt="Choose a printer model" style="width: 512px; height: 327px;"><br>
+<br>
+<span style="font-style: italic;">Click Finish.</span><br>
+<img src="RedHatPrinterAddQueue-06.png" title="" alt="Click finish"
+ style="width: 512px; height: 327px;"><br>
+<br>
+Now if you send a print job to this printer, it should show up in the
+lpdspooler.&nbsp; You can either use a text editor with your version of
+linux, or the command: "lpr -P LPR_PRINTER testFile.txt" worked for me.<br>
+<br>
+<a href="http://lpdspooler.sourceforge.net/">Back to home page.</a><br>
+<br>
+</body>
+</html>

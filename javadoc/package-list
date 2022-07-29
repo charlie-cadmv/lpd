@@ -1,0 +1,9 @@
+org.simoes.lpd
+org.simoes.lpd.command
+org.simoes.lpd.common
+org.simoes.lpd.exception
+org.simoes.lpd.handler
+org.simoes.lpd.test
+org.simoes.lpd.ui
+org.simoes.lpd.util
+org.simoes.util
